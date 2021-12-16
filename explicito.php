@@ -1,7 +1,6 @@
 <?php
-$connString = 'host = localhost dbname= teste user=postgres password=senha';
+$connString = 'host = localhost dbname=postgres user=postgres password=123linka123';
 
- 
 try{ 
 
     $db = pg_connect($connString);
@@ -33,17 +32,11 @@ while ($line = fgetcsv($handle,1000,",")){
 
     $res = pg_insert($db, 'covid', $insert);
     if(!$res){
-        $erro++;
+        pg_query($db, "ROLLBACK");
     }
 }
-if ($erro > 0) {
-	pg_query($db, "ROLLBACK");
-}
-else{
-    pg_query($db, "COMMIT");
-}
 
- 
+pg_query($db, "COMMIT");
 
 $finalTime = microtime(true);
 fclose($handle);
